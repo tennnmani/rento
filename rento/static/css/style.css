@@ -1,0 +1,95 @@
+/*all page*/
+a:link{
+	text-decoration: none;
+}
+.card-img-top {
+	width: 100%;
+	height: 15vw;
+	object-fit: cover;
+}
+/*all page*/
+
+/*login css start*/
+.loginform:after {
+    position: absolute;
+    margin-right: 50px;
+    right: -14px;
+    top: -30px;
+    height: 370px;
+    width: 1px;
+    background: black;
+    content: "";
+}
+@media (min-width: 0px) and (max-width: 991px){
+	.loginform:after{
+		display:none;
+	}
+}
+@media (min-width: 992px) and (max-width: 1024px){
+	.loginform:after{
+		display:block;
+	}
+}
+/*login css end*/
+
+/*registration css start*/
+.registrationform:after {
+    position: absolute;
+    margin-right: 50px;
+    right: -14px;
+    top: -30px;
+    height: 940px;
+    width: 1px;
+    background: black;
+    content: "";
+}
+@media (min-width: 0px) and (max-width: 991px){
+	.registrationform:after{
+		display:none;
+	}
+}
+@media (min-width: 992px) and (max-width: 1024px){
+	.registrationform:after{
+		display:block;
+	}
+}
+/*registration css end*/
+
+/*room css start*/
+
+/*room css end*/
+
+/*roomdetail iframe css start*/
+.map-container{
+overflow:hidden;
+padding-bottom:56.25%;
+position:relative;
+height:0;
+}
+.map-container iframe{
+left:0;
+top:0;
+height:100%;
+width:100%;
+position:absolute;
+}
+/*roomdetail iframe css end*/
+
+/*footer quicklink css*/
+.quicklink a:hover{
+	text-decoration: underline;
+}
+/*footer quicklink css*/
+
+/*dashboard css*/
+.sidebar a{
+	color: white;
+}
+.sidebar a:hover{
+	color: white;
+	background-color: #4d4d4d;
+}
+a.dropdown-toggle {
+    text-decoration: none;
+}
+/*dashboard css*/

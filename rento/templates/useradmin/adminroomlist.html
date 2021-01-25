@@ -1,0 +1,106 @@
+{% extends 'useradmin/base.html' %}
+{% block title %}Room List{% endblock title %}
+{% block body %}
+        <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block" style="background-color: #4d4d4d; ">
+          <div class="container pt-3">
+            <h5 class="text-light">Rooms List</h5>
+            {% for message in messages %}
+            {% if 'success' in message.tags %}
+            <p id="success" style="color:rgb(224, 217, 217)">{{message}}</p>
+            {% endif %}
+            {% if 'info' in message.tags %}
+            <p id="info" style="color:red">{{message}}</p>
+            {% endif %}
+            {% endfor %}
+            <table class="table table-bordered bg-light mb-0">
+             <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Room Owner</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Total Report</th>
+                  <th scope="col">Total Views</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in rooms %}
+                <tr>
+                  <th scope="row">{{ forloop.counter0|add:rooms.start_index }} </th>
+                  <td>{{ room.id }}</td>
+                  <td>{{ room.user }}</td>
+                  <td>{{ room.city }}</td>
+                  <td>{{ room.total_report }}</td>
+                  <td>{{ room.views }}</td>
+                  <td>
+                    {% if room.blocked == True %}
+                    blocked
+                    {% else %}
+                    {{ room.room_status }}
+                    {% endif %}</td>
+                  <td>
+                    <a type="button" href="{% url 'roomdetail' room.pk%}" class="btn btn-primary btn-sm m-0">View Room</a>
+                    {% if room.blocked == False  %}
+                    <a type="button" href="{% url 'blockroom' room.pk%}" class="btn btn-danger btn-sm m-0 mx-2">Block Room</a>
+                    {% else %}
+                    <a type="button" href="{% url 'unblockroom' room.pk%}" class="btn btn-success btn-sm m-0">Unblock Room</a>
+                    {% endif %}
+                    <a type="button" class="btn btn-danger btn-sm m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{room.pk}}" >Delete Room</a>
+                     
+                    <div class="modal fade" id="DeleteModal{{room.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="DeleteModalLabel">Are you sure you want to delete room?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a type="submit" class="btn btn-primary btn-ok" href="{% url 'admin_delete_room' room.pk%}">Yes</a>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+               
+              </tbody>
+            </table>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-6">
+              <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{rooms.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-6">
+             <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- dashboard end -->
+{% endblock body %}

@@ -1,0 +1,46 @@
+{% extends 'user/base.html' %}
+{% block title %}AddRoom{% endblock title %}
+{% block body %}
+    <!-- profile start -->
+    <div class="col-lg-10" style="background-color: #4d4d4d; height:690px;">
+      <div class="col-lg-5 py-3 mx-auto text-light">
+      <h3>Profile</h3>
+            <form action="editprofile">
+              <div class="row mt-3 mb-3">
+                <div class="col-lg-3">
+                  <label for="Name" class="form-label">User Name:</label>
+                </div>
+                <div class="col-lg-5">
+                  <label for="Name" class="form-label">{{ user.username }}</label>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-3">
+                  <label for="Phone" class="form-label">Phone:</label>
+                </div>
+                <div class="col-lg-5">
+                  <label for="Phone" class="form-label">{{ user.phone_number }}</label>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-3">
+                  <label for="exampleInputEmail1" class="form-label">Email:</label>
+                </div>
+                <div class="col-lg-5">
+                  <label for="exampleInputEmail1" class="form-label">{{ user.email }}</label>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-3">
+                  <label for="exampleInputEmail1" class="form-label">Address:</label>
+                </div>
+                <div class="col-lg-5">
+                  <label for="exampleInputEmail1" class="form-label">{{ user.location }}</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+          </div>
+          </div>
+    <!-- profile end -->
+{% endblock body %}

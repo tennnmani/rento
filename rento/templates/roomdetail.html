@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}RoomDetail{% endblock title %}
+{% block body %}
+    <div class="container" style="background-color: #404040;">
+      {% for message in messages %}
+      {% if 'success' in message.tags %}
+      <p id="success" style="color:rgb(207, 186, 186)">
+        <div class="alert alert-success" role="alert">
+          {{message}}
+        </div></p>
+     
+      {% endif %}
+      {% if 'info' in message.tags %}
+      <p id="info" style="color:red">{{message}}</p>
+      {% endif %}
+      {% endfor %}
+      <!-- photo box start -->
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-3 col-lg-2 "  id="actualImage">
+            <div class="mb-2 pt-5" >
+              <img class="img-thumbnail" src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" onclick="updateSource" style="width:100%; height:119px;">
+            </div>
+            <div class="mb-2 pt-5">
+              <img class="img-thumbnail" src="{% if rooms.image2 %}{{rooms.image2.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" style="width:100%; height:119px;">
+            </div>
+            <div class="mb-2 pt-5">
+              <img class="img-thumbnail" src="{% if rooms.image3 %}{{rooms.image3.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" style="width:100%; height:119px;">
+            </div>
+          </div>
+          <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block">
+              <img id="clickedImage" width="1020" height="380" class="img-fluid" src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class="rounded-0" alt="...">
+          </div>
+        </div>
+      </div>
+      <!-- photo box end -->
+      <div class="container py-3 px-3" style="background-color: #4d4d4d;">
+       
+      <!-- detail box start -->
+      <div class="container py-3">
+        <div class="py-1 px-1">
+            <ul class="list-unstyled list-inline text-end" style="font-size:12px">
+              <li class="text-light">Date Posted: {{rooms.date_posted}}</li>
+              <li class="text-light">{{rooms.location}}</li>
+            </ul>
+          </div>
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Posted By : </li>
+             
+              <li class="list-inline-item text-light fw-bold text-capitalize">{{rooms.user}}</li>
+            </ul>
+          </div>
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Price:</li>
+              <li class="list-inline-item text-light">Rs {{rooms.price}}</li>
+            </ul>
+          </div>
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">House Number :</li>
+              <li class="list-inline-item text-light ">{{rooms.house_number}}</li>
+            </ul>
+          </div>
+         
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Facilities :</li>
+              <li class="list-inline-item text-light">{% if rooms.water %}Water{% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.parking %}Parking{% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.internet %}Internet{% endif %}</li>
+            </ul>
+          </div>
+          
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">Description :</li>
+                <li class="list-inline-item text-light ">{{rooms.description}}</li>
+              </ul>
+            </div>
+            
+            
+          
+        {% if request.user == rooms.user %}
+
+        {% else %}
+        <div class="row">
+          <div class="col">
+            <a  class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#EnquiryModal" >Enquiry</a>
+          </div>
+          <div class="modal fade" id="EnquiryModal" tabindex="-1" aria-labelledby="EnquiryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="EnquiryModalLabel">Enquiry</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'enquirycreate' rooms.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mt-3 mb-3">
+                      <label for="Name" class="form-label">Name</label>
+                      {{ enquiryform.name }}
+                    </div>
+                    <div class="mb-3">
+                      <label for="Phone" class="form-label">Phone Number</label>
+                      {{ enquiryform.phone }}
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Email address</label>
+                      {{ enquiryform.email }}
+                    </div>
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address</label>
+                      {{ enquiryform.address }}
+                    </div>
+                    <div class="mb-3">
+                      <label for="occupation" class="form-label">Occupation</label>
+                      {{ enquiryform.occupation }}
+                    </div>
+                    <div class="mb-3">
+                      <label for="question" class="form-label">Question</label>
+                      {{ enquiryform.question }}
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send Enquiry</button>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col text-end">
+            <a  class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#ReportModal" >Report</a>
+          </div>
+          <div class="modal fade" id="ReportModal" tabindex="-1" aria-labelledby="ReportModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ReportModalLabel">Report</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'reportcreate' rooms.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mt-3 mb-3">
+                      <label for="report_type">Report Type:</label>
+                      <div> {{ reportform.report_type }}</div>
+                      <!-- <select id="report_type">
+                        <option value="fake_contacts" selected>Fake Contacts</option>
+                        <option value="fake_room">Fake Room</option>
+                        <option value="misleading_description">Misleading Descriptions</option>
+                        <option value="other">Other</option>
+                      </select> -->
+                    </div> 
+                    <div class="mt-3 mb-3">
+                      <label for="report_description">Report Description:</label>
+                      <div> {{ reportform.report_description }}</div>
+                      <!-- <input type="text" class="form-control" id="report_description" > -->
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send Report</button>
+                  </form>
+                </div>
+              </div>
+          
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <!-- detail box end -->
+      </div>
+      <!-- Similar room start -->
+      <section class="container my-5">
+        <div class="container">
+          <h2 class="text-light mb-5">Similar Rooms</h2>
+        </div>
+        <div class="row container mt-3">
+        {% for roomlist in similarroom|slice:"4" %}
+          <div class='col-lg-3 col-md-6 col-12 mb-5'>
+             <div id="roomCard" class='card'>
+                      <a href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if roomlist.image1 %}{{roomlist.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190" alt='Rento'></a>
+                      <div class='card-body'>
+                        <h5 class='card-title' >Price: {{roomlist.price}}</h5>
+                        <hr>
+                        <p class='card-text '>
+                          {{roomlist.location}}
+                        </p>
+                        <hr>
+                        <p class='card-text'>
+                          Facilities:
+                        </p>
+                        <p class='card-text'>
+                          {% if roomlist.water %}Water{% endif %}
+                          {% if roomlist.parking %}Parking{% endif %}
+                          {% if roomlist.internet %}Internet{% endif %}
+                        </p>
+                        <hr>
+                        <a  class='btn btn-primary mt-2' href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                      </div>
+                    </div>
+          </div>
+        {%endfor%}
+          
+        </div>
+      </section>
+      <!-- Similar room start -->
+  </div>
+{% endblock body %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+      $(document).ready(function () {
+        // Listen for clicks to "img" elements inside the element where id="sinistra"
+        $("#actualImage img").click(function () {
+          // Displays the source of the image clicked
+          $('#clickedImage').attr('src',$(this).attr("src"));
+        });
+      });
+  </script>
+{% endblock script %}
