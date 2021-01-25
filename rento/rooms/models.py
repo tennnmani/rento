@@ -38,26 +38,33 @@ class Room(models.Model):
     location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
     house_number = models.CharField(max_length=120) # max_length = required
     description = models.TextField(blank=True, null=True)
-    floor       = models.IntegerField()
-    price       = models.PositiveIntegerField()
+    floor       = models.PositiveSmallIntegerField()
+    price       = models.PositiveSmallIntegerField()
+    #images
     image1 = models.ImageField(upload_to='')
     image2 = models.ImageField(upload_to='')
     image3 = models.ImageField(upload_to='')
+    #facility
     water = models.BooleanField(default=False)
     internet = models.BooleanField(default=False)
-    parking = models.BooleanField(default=False)
+    parking = models.PositiveSmallIntegerField(default=0)
+    c_parking = models.PositiveSmallIntegerField(default=0)
+    #rooms
+    bedroom = models.PositiveSmallIntegerField(default=1)
+    bathroom = models.PositiveSmallIntegerField(default=1)
+
     description     = models.TextField(max_length=500,blank=False, null=False)
     date_posted = models.DateField(auto_now_add=True)
-    views = models.IntegerField(default=0)
+    views = models.PositiveSmallIntegerField(default=0)
     blocked = models.BooleanField(default=False)
     room_status = models.CharField(max_length=20, choices=status1, default='public')
-    total_enquiry = models.IntegerField(default=0)
-    total_report = models.IntegerField(default=0)
+    total_enquiry = models.PositiveSmallIntegerField(default=0)
+    total_report = models.PositiveSmallIntegerField(default=0)
     featured = models.CharField(max_length=100, choices=status2, default='not_featured')
     featured_date = models.DateField(null=True,blank=True)
     feature_end = models.DateField(null=True,blank=True)
-    times_featured = models.IntegerField(default=0)
-    day_remaning = models.IntegerField(default=0)
+    times_featured = models.PositiveSmallIntegerField(default=0)
+    day_remaning = models.PositiveSmallIntegerField(default=0)
     declined_date = models.DateField(null=True,blank=True)
     
     
