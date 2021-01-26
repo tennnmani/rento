@@ -1,0 +1,110 @@
+{% extends 'user/base.html' %}
+{% block title %}EnquiryList{% endblock title %}
+{% block body %}
+    <!-- enquiry list start -->
+        <div class="col-md-9 col-lg-10 pb-3" style="background-color: #4d4d4d;">
+          <div class="container pt-3">
+            <h5 class="text-light">Enquiry List  </h5>
+            {% for message in messages %}
+            <p id="nfo" style="color:rgb(250, 26, 26)">{{message}}</p>
+            {% endfor %}
+            
+            {% if not enquirys %}
+                    <p class="text-light"> You havent added any Enquiryes of yet.  </p>
+                    <a class="btn btn-primary mt-1" href="{% url 'addroom' %}">Add Room</a>
+               {% else %}
+            {% comment %} <form class="d-flex form-inline mb-2">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Search</span>
+                  <input type="text" class="form-control" placeholder="RoomTag" aria-label="search" aria-describedby="basic-addon1">
+                </div>
+              </form> {% endcomment %}
+            <div style="overflow-x:auto;">
+            <table class="table table-bordered bg-light mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                {% for enquiry in enquirys %}
+             
+               
+                <tr>
+                  <th scope="row">{{ forloop.counter0|add:enquirys.start_index }}</th>
+                  <td>{{enquiry.room}}</td>
+                  <td>{{enquiry.name}}</td>
+                  <td>{{enquiry.phone}}</td>
+                  <td>{{enquiry.email}}</td>
+                  <td>{{enquiry.address}}</td>
+                  <td>
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'roomenqiury' enquiry.pk%}">View Detail</a>
+                    <a type="button" class="btn btn-danger btn-sm m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{enquiry.pk}}" >Delete</a>
+                     
+                      <div class="modal fade" id="DeleteModal{{enquiry.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="DeleteModalLabel">Do you want to confirm Delete Enquiry?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a type="submit" class="btn btn-primary btn-ok" href="{% url 'enqiurydelete' enquiry.pk %}">Yes</a>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    
+                  </td>
+                </tr>
+
+               
+                {% endfor %}
+                
+              </tbody>
+            </table>
+          </div>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
+              <p class="fw-bold d-flex ps-3 justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start">Showing {{enquirys.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+             <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                  {% if enquirys.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ enquirys.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in enquirys.paginator.page_range %}
+                    {% if enquirys.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if enquirys.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ enquirys.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    <!-- enquiry list end -->
+{% endblock body %}

@@ -1,0 +1,136 @@
+{% extends 'user/base.html' %}
+{% block title %}AddRoom{% endblock title %}
+{% block body %}
+    <!-- dashboard start -->
+        <div class="col-md-9 col-lg-10" style="background-color: #4d4d4d;">
+          <div class="container pt-3 pb-3">
+            <h5 class="text-light">Room List</h5>
+            
+            {% for message in messages %}
+            <p id="nfo" style="color:rgb(250, 26, 26)">{{message}}</p>
+            {% endfor %}
+
+            {% if not rooms %}
+                    <p class="text-light"> You havent added any rooms. Please add a room to view this page</p>
+                    <a class="btn btn-primary mt-1" href="{% url 'addroom' %}">Add Room</a>
+               {% else %}
+            
+            <div style="overflow-x:auto;">
+              
+              <table class="table table-bordered bg-light mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">RoomTag</th>
+                    <th scope="col">City Name</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">House No.</th>
+                    <th scope="col">Floor</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Facility</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Room Status</th>
+         
+                  </tr>
+                </thead>
+                <tbody>
+                {% for room in rooms%}
+                  <tr>
+                    <th class="roomId">{{ forloop.counter0|add:rooms.start_index }}</th>
+                    <td>{{room.pk}}</td>
+                    <td>{{room.city}}</td>
+                    <td>{{room.location}}</td>
+                    <td>{{room.house_number}}</td>
+                    <td>{{room.floor}}</td>
+                    <td>{{room.price}}</td>
+                    <td>
+                      {% if room.water == True %}
+                      Water
+                      {% endif %}
+                      {% if room.internet == True %}
+                      Internet
+                      {% endif %}
+                      {% if room.parking == True %}
+                      Parking
+                      {% endif %}</td>
+                    <td>
+                      <a type="button" href="{% url 'editroom' room.pk%}" class="btn btn-primary btn-sm m-0">Edit</a>
+                      <a type="button" class="btn btn-danger btn-sm m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{room.pk}}" >Delete</a>
+                     
+                      <div class="modal fade" id="DeleteModal{{room.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="DeleteModalLabel">Do you want to confirm Delete Room?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a type="submit" class="btn btn-primary btn-ok" href="{% url 'deleteroom' room.pk %}">Yes</a>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    
+                    </td>
+                    <!-- <td>
+                      {{room.room_status}}
+                    </td> -->
+                    <td>
+                      {% if room.blocked == True %}
+                      <button type="button" class="btn btn-dark btn-sm m-0" disabled>Blocked</button>
+                        {% elif room.room_status == 'public' %}
+                        <a type="button" href="{% url 'privateroom' room.pk%}" class="btn btn-success btn-sm m-0">Public</a> 
+                        {% else %}
+                        <a type="button" href="{% url 'publicroom' room.pk%}" class="btn btn-warning btn-sm m-0">Private</a> 
+                        {%endif%}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  
+                    
+                    
+                    
+                  
+                </tbody>
+                
+              </table>
+             
+            </div>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+                <div class="col-6">
+                  <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{rooms.end_index}} of {{count}}</p>
+                </div>
+                <div class="col-6">
+                  <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+                  
+    <!-- dashboard end -->
+{% endblock body %}

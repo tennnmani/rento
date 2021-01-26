@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block body %}
+<main>
+      <!-- slider start-->
+      <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+          <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+          <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <!-- carousel text start -->
+          <div class="carousel-caption">
+            {% if user.is_authenticated %}
+            {% else %}
+            <p><a class="btn btn-md btn-primary" href="{% url 'registration' %}" role="button">Register</a> To Rent Your Room</p>
+            {% endif %}
+            <p>Find Room Of Your Choice</p>
+            <form class="d-flex form-inline justify-content-center">
+              <div class="input-group w-25">
+                <input type="text" class="form-control" placeholder="Search By Location" aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- carousel text end -->
+          <div class="carousel-item active">
+            <svg class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/><img src='{% static 'image/image1.jpg' %}' alt='Rento'></svg>
+          </div>
+          <div class="carousel-item">
+            <svg class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/><img src='{% static 'image/image2.jpg' %}' alt='Rento'></svg>
+          </div>
+          <div class="carousel-item">
+            <svg class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/><img src='{% static 'image/image2.jpg' %}' alt='Rento'></svg>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+        
+        </div>
+        <!-- slider end -->
+        <!-- featured room start -->
+        <section class="container my-5">
+        <div class="container">
+            <h2 class="text-light text-center mb-5">Featured Room</h2>
+        </div>
+        <div class="row container mt-3">
+            {% for room in rooms %}
+            <div class='col-lg-3 col-md-6 col-12 mb-5'>
+                <div id="roomCard" class='card'>
+                    <a href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if room.image1 %}{{room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190"alt='Rento'></a>
+                    <div class='card-body'>
+                      <h5 class='card-title' >Price: {{ room.price }}</h5>
+                      <hr>
+                      <p class='card-text '>
+                        {{ room.location }} //
+                        {{ room.user }}
+                      </p>
+                      <hr>
+                      <p class='card-text'>
+                        Facilities:
+                      </p>
+                      <p class='card-text'>
+                        {% if room.water == True %}
+                        Water
+                        {% endif %}
+                        {% if room.internet == True %}
+                        Internet
+                        {% endif %}
+                        {% if room.parking == True %}
+                        Parking
+                        {% endif %}
+                      </p>
+                      <hr>
+                      <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                    </div>
+                  </div>
+            </div>
+            {% endfor %}
+        </div>
+        </section>
+        <!-- featured room start -->
+</main>
+{% endblock body %}

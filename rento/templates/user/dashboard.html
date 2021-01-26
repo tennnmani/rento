@@ -1,0 +1,93 @@
+{% extends 'user/base.html' %}
+{% block title %}Dashboard{% endblock title %}
+{% block body %}
+    <!-- dashboard start -->
+        <div class="col-md-9 col-lg-10" style="background-color: #4d4d4d; height:690px;">
+          <div class="container pt-3">
+            <h5 class="text-light">Room List</h5>
+            {% if not rooms %}
+                    <p class="text-light"> You havent added any rooms. Please add a room to view this page</p>
+                    <a class="btn btn-primary mt-1" href="{% url 'addroom' %}">Add Room</a>
+               {% else %}
+            {% comment %} <form class="d-flex form-inline mb-2">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Search</span>
+                  <input type="text" class="form-control" placeholder="RoomTag" aria-label="search" aria-describedby="basic-addon1">
+                </div>
+              </form> {% endcomment %}
+            <div style="overflow-x:auto;">
+            <table class="table table-bordered bg-light mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Houser Number</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Total Views</th>
+                  <th scope="col">Enquiry</th>
+                  <th scope="col"> View Room</th>
+                  <th scope="col"> Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in rooms %}
+                <tr>
+                  <th scope="row">{{ forloop.counter0|add:rooms.start_index }}</th>
+                  <td>{{room.id}}</td>
+                  <td>{{room.city}}</td>
+                  <td>{{room.house_number}}</td>
+                  <td>{{room.price}}</td>
+                  <td>{{room.views}}</td>
+                  <td>{{room.total_enquiry}} </td>
+                  <td><a type="button" href="{% url 'roomdetail' room.pk%}" class="btn btn-primary btn-sm m-0">View Room</a></td>
+                  <td>
+                    {% if room.blocked == True %}
+                    <button type="button" class="btn btn-dark btn-sm m-0" disabled>Blocked</button>
+                      {% elif room.room_status == 'public' %}
+                      <a type="button" href="{% url 'd_privateroom' room.pk%}" class="btn btn-success btn-sm m-0">Public</a> 
+                      {% else %}
+                      <a type="button" href="{% url 'd_publicroom' room.pk%}" class="btn btn-warning btn-sm m-0">Private</a> 
+                      {%endif%}
+                  </td>
+                </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>
+          </div>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
+              <p class="fw-bold d-flex ps-3 justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start">Showing {{rooms.end_index}} of {{count}} </p>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+             <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    <!-- dashboard end -->
+{% endblock body %}

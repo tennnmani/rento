@@ -1,0 +1,104 @@
+{% extends 'useradmin/base.html' %}
+{% block title %}AdminDashboard{% endblock title %}
+{% block body %}
+        <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block" style="background-color: #4d4d4d; ">
+          <div class="container pt-3">
+            {% for message in messages %}
+            {% if 'success' in message.tags %}
+            <p id="success" style="color:rgb(224, 217, 217)">{{message}}</p>
+            {% endif %}
+            {% if 'info' in message.tags %}
+            <p id="info" style="color:red">{{message}}</p>
+            {% endif %}
+            {% endfor %}
+            <h5 class="text-light">User List</h5>
+            <table class="table table-bordered bg-light mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Users</th>
+                  <th scope="col">User's Number</th>
+                  <th scope="col">Total Rooms</th>
+                  <th scope="col">Total Views</th>
+                  <th scope="col">Total Complaints</th>
+                  <th scope="col">Total Enquiry</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                
+                <tr>
+                  <th scope="row">{{forloop.counter0|add:users.start_index}}</th>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.phone_number }}</td>
+                  <td>{{ user.total_rooms }}</td>
+                  <td>{{ user.total_views }}</td>
+                  <td>{{ user.total_reports }}</td>
+                  <td>{{ user.total_enquiry }}</td>
+                  <td>{{ user.user_status }}</td>
+                  
+                  <td>
+                    <a type="button" href="{% url 'd_adminroomlist' user.pk%}" class="btn btn-primary btn-sm m-0 mx-2">View RoomList</a>
+                    
+                    {% if user.user_status == 'clear'  %}
+                    <a type="button" href="{% url 'block_user' user.pk%}" class="btn btn-danger btn-sm m-0 mx-2">Block User</a>
+                    {% else %}
+                    <a type="button" href="{% url 'unblock_user' user.pk%}" class="btn btn-success btn-sm m-0">Unblock User</a>
+                    {% endif %}
+                    <a type="button" class="btn btn-danger btn-sm m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{user.pk}}" >Delete User</a>
+                     
+                      <div class="modal fade" id="DeleteModal{{user.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="DeleteModalLabel">Are you sure you want to Delete user?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a type="submit" class="btn btn-primary btn-ok" href="{% url 'delete_user' user.pk %}">Yes</a>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-6">
+              <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{users.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-6">
+             <nav aria-label="Page navigation example">
+                 <ul class="pagination justify-content-center">
+                  {% if users.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in users.paginator.page_range %}
+                    {% if users.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if users.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock body %}

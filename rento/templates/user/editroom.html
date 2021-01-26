@@ -1,0 +1,133 @@
+{% extends 'user/base.html' %}
+{% block title %}AddRoom{% endblock title %}
+{% block body %}
+    <!-- dashboard start -->
+        <div class="col-lg-10" style="background-color: #4d4d4d;">
+          <div class="container text-light col-lg-10 pt-4">
+            <h3>Edit Room</h3>
+          <form action="" method="POST" id="addroomForm" data-locations-url="{% url 'ajax_load_locations' %}">
+          {% csrf_token %}
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="cityName" class="col-form-label">City Name:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.city }}
+                </div>
+                <div class="col-lg-2">
+                  <label for="location" class="col-form-label">Location:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.location }}
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="houseNumber" class="col-form-label">House No.:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.house_number }}
+                </div>
+                <div class="col-lg-2">
+                  <label for="floor" class="col-form-label">Floor:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.floor }}
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="price" class="col-form-label">Price:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.price }}
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="uploadImage" class="col-form-label">Image:</label>
+                </div>
+                <div class="col-lg-3">
+                  {{ form.image1 }}
+                </div>
+                <div class="col-lg-3">
+                  {{ form.image2 }}
+                </div>
+                <div class="col-lg-3">
+                  {{ form.image3 }}
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="facility" class="col-form-label">Facility:</label>
+                </div>
+                <div class="col-lg-auto">
+                {{ form.water }}
+                  <label for="water" class="col-form-label ps-2">Water</label>
+                </div>
+                <div class="col-lg-auto">
+                {{ form.internet }}
+                  <label for="internet" class="col-form-label ps-2">Internet</label>
+                </div>
+                <div class="col-lg-auto">
+                {{ form.parking }}
+                  <label for="parking" class="col-form-label ps-2">Parking</label>
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="">
+                  <label for="roomDetail" class="col-form-label">Description:</label>
+                </div>
+                <div class="form-floating col-lg-15">
+                  {{ form.description }}
+                </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
+                  <label for="status" class="col-form-label">Status:</label>
+                </div>
+                <div class="col-lg-4">
+                  {{ form.room_status }}
+                </div>
+              </div>
+              {% comment %} {{ form.as_p}} {% endcomment %}
+               <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-15 text-end">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="cancel" class="btn btn-primary">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+    <!-- dashboard end -->
+{% endblock body %}
+{% block ajax %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_city").change(function () {
+        const url = $("#addroomForm").attr("data-locations-url");  // get the url of the `load_cities` view
+        const cityId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'city_id': cityId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_location").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+                */
+            }
+        });
+
+    });
+</script>
+{% endblock ajax %}
+    

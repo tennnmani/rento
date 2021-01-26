@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}EnquiryDetail{% endblock title %}
+{% block body %}
+<div class="container mb-4 pb-3" style="background-color: #404040;">
+    <!-- photo box start -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 " id="actualImage">
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if reports.room.image1 %}{{reports.room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        onclick="updateSource" style="width:100%; height:119px;">
+                </div>
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if reports.room.image2 %}{{reports.room.image2.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        style="width:100%; height:119px;">
+                </div>
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if reports.room.image3 %}{{reports.room.image3.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        style="width:100%; height:119px;">
+                </div>
+            </div>
+            <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block">
+                <img id="clickedImage" width="1020" height="380" class="img-fluid"
+                    src="{% if reports.room.image1 %}{{reports.room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                    class="rounded-0" alt="...">
+            </div>
+        </div>
+    </div>
+    <!-- photo box end -->
+    <div class="container py-3 px-3" style="background-color: #4d4d4d;">
+        <!-- detail box start -->
+            <div class="py-1 px-1">
+                <ul class="list-unstyled list-inline" style="font-size:12px">
+                    <li class="text-light">Date Posted: {{reports.room.date_posted}}</li>
+                    <li class="text-light">{{reports.room.location}}</li>
+                </ul>
+            </div>
+            <div class="row">
+                
+                <div class="col-lg-7 text-light">
+                    <h4>For Room</h4>
+                    <div class="pt-3">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">room tag:</li>
+                            <li class="list-inline-item text-light">{{reports.room.id}}</li>
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">Price:</li>
+                            <li class="list-inline-item text-light">Rs {{reports.room.price}}</li>
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                          <li class="list-inline-item text-light">House Number :</li>
+                          <li class="list-inline-item text-light ">{{reports.room.house_number}}</li>
+                        </ul>
+                      </div>
+                     
+                      <div class="">
+                        <ul class="list-unstyled list-inline">
+                          <li class="list-inline-item text-light">Facilities :</li>
+                          <li class="list-inline-item text-light">{% if reports.room.water %}Water{% endif %}</li>
+                          <li class="list-inline-item text-light">{% if reports.room.parking %}Parking{% endif %}</li>
+                          <li class="list-inline-item text-light">{% if reports.room.internet %}Internet{% endif %}</li>
+                        </ul>
+                      </div>
+                      
+                        <div class="">
+                          <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">Description :</li>
+                            <li class="list-inline-item text-light ">{{reports.room.description}}</li>
+                          </ul>
+                        </div>
+                        
+                </div>
+               
+                <div class="col-lg-3 text-light">
+                    <h4>Report Detail</h4>
+                    <div class=" pt-3 text-light">
+                        
+                        <div class="">
+                            <ul class="list-unstyled list-inline">
+                                <li class="list-inline-item text-light">Report Type:</li>
+                                <li class="list-inline-item text-light">{{reports.report_type}}</li>
+                            </ul>
+                        
+            
+                        </div>
+                        <div class="">
+                            <ul class="list-unstyled list-inline">
+                                <li class="list-inline-item text-light">Report Description:</li>
+                                <li class="list-inline-item text-light">{{reports.report_description}}</li>
+                            </ul>
+                        
+                            <div class="">
+                                {% if report.room.blocked == True %}
+                                <button type="button" class="btn btn-primary mx-2 my-2" disabled>Room Blocked</button>
+                                {% else %}
+                                <a type="button" href="{% url 'c_blockroom' reports.pk%}" class="btn btn-primary mx-2 my-2 ">Block Room</a>
+                                {% endif %}
+                                <a type="button" href="{% url 'c_discard' reports.pk%}" class="btn btn-primary mx-2 my-2">Discard Report</a>
+                               
+                                <a type="button" class="btn btn-danger mx-2 my-2" data-bs-toggle="modal" data-bs-target="#DeleteModal{{reports.room.pk}}" >Delete Room</a>
+                                
+                                <div class="modal fade" id="DeleteModal{{reports.room.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="DeleteModalLabel">Are you sure you want to Delete complaint?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <a type="submit" class="btn btn-primary btn-ok" href="{% url 'admin_delete_c_room' reports.room.pk%}">Yes</a>
+                                    </div>
+
+                                    </div>
+                                </div>
+                                </div>
+                          
+                              </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <!-- detail box end -->
+
+    </div>
+
+</div>
+{% endblock body %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Listen for clicks to "img" elements inside the element where id="sinistra"
+        $("#actualImage img").click(function () {
+            // Displays the source of the image clicked
+            $('#clickedImage').attr('src', $(this).attr("src"));
+        });
+    });
+</script>
+{% endblock script %}

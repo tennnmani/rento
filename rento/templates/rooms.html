@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Rooms{% endblock title %}
+{% block body %}
+    <main>
+        <div class="container-fluid" style="background-color: #4d4d4d;">
+          <div class="row">
+            <div id="filterBar" class="col-md-3 col-lg-2 pb-2 text-light" style="background-color: #404040;" >
+              <h5 class="mt-3 text-center">Filter</h5>
+              
+              <form method="GET" action="/rooms/?location&water&internet&parking&pricefilter">
+              <div class="bg-dark mt-2 mb-2 pt-2 pb-4">
+                <label class="ms-3">Location:</label>
+                <div class="px-3 mt-2">
+                  <select class="form-control" onfocus='this.size=5;' name="location" onblur='this.size=1;' onchange='this.size=1; this.blur();'aria-label="Default select example">
+                    <option value="">Select Location</option>
+                    {% for locationfilter in locations %}
+                    <option value="{{locationfilter.pk}}" {% if locationfilter.pk|slugify == values.locationID %}selected{% endif%}>{{locationfilter.location}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="bg-dark mb-2 pt-2">
+                <label class="ms-3">Facility:</label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility1" name="water" value="True"  {% if values.facility1 == "True" %}checked{% endif%}> Water</label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility2" name="internet" value="True" {% if values.facility2 == "True" %}checked{% endif%}> Internet</label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility3" name="parking" value="True" {% if values.facility3 == "True" %}checked{% endif%}> Parking</label>
+              </div>
+              <div class="bg-dark pt-2">
+                <label class="ms-3 mb-2">Price:</label><br>
+                <input class="ms-3 mb-3 text-light active" type="radio" id="pricefilter1" name="pricefilter" value="1"{% if values.pricefilter == "1" %}checked{% endif%}>
+                <label for="lowtohigh">Low to High</label><br>
+                <input class="ms-3 mb-3 text-light active" type="radio" id="pricefilter2" name="pricefilter" value="2"{% if values.pricefilter == "2"%}checked{% endif%}>
+                <label for="hightolow">High to Low</label><br>
+              </div>
+              <div class="mt-2 justify-content-center row">
+                {% comment %} <div class="col-md-5"> {% endcomment %}
+                <button type="submit" class="col-11 col-sm-10 col-md-10 col-lg-10 btn btn-primary">Search</button>
+                {% comment %} </div> {% endcomment %}
+              </div>
+            </form>
+
+
+            </div>
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4"  >
+              <!-- pagination top start -->
+              <div class=" mt-5 bg-light">
+                <nav aria-label="Page navigation example">
+                  {% comment %} {% if rooms.has_other_pages %} {% endcomment %}
+                  <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }} <span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+                {% comment %} {% endif %} {% endcomment %}
+                </nav>
+              </div>
+              <!-- pagination top end -->
+              <!-- show room start -->
+              <section class="container my-5">
+                <!-- <h2 class="text-light text-center mb-5">Rooms</h2> -->
+                <div class="row container mt-3">
+                {% for room in rooms %}
+                  <div class='col-lg-3 col-md-6 col-12 mb-5'>
+
+                      <div id="roomCard" class='card'>
+                        <a href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if room.image1 %}{{room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190"alt='Rento'></a>
+                        <div class='card-body'>
+                          <h5 class='card-title' >Price: {{ room.price }}</h5>
+                          <hr>
+                          <p class='card-text '>
+                            {{ room.location }} //
+                            {{ room.user }}
+                          </p>
+                          <hr>
+                          <p class='card-text'>
+                            Facilities:
+                          </p>
+                          <p class='card-text'>
+                            {% if room.water == True %}
+                            Water
+                            {% endif %}
+                            {% if room.internet == True %}
+                            Internet
+                            {% endif %}
+                            {% if room.parking == True %}
+                            Parking
+                            {% endif %}
+                          </p>
+                          <hr>
+                          <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                        </div>
+                      </div>
+                                        
+                  </div>
+                {% endfor %}
+              </section>
+              <!-- show room end -->
+              <!-- pagination buttom start -->
+              <div class="bg-light text-light">
+                <nav aria-label="Page navigation example">
+                {% comment %} {% if rooms.has_other_pages %} {% endcomment %}
+                  <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }} <span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?{% if values.locationID %}location={{values.locationID}}&{% endif %}{% if values.facility1 == "True" %}water={{values.facility1}}&{% endif%}{% if values.facility2 == "True" %}internet={{values.facility2}}&{% endif%}{% if values.facility3 == "True" %}parking={{values.facility3}}&{% endif%}{% if values.pricefilter %}pricefilter={{values.pricefilter}}&{% endif%}page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+                {% comment %} {% endif %} {% endcomment %}
+                </nav>
+              </div>
+              <!-- pagination buttom end -->
+            </div>
+          </div>
+        </div>
+      </main>
+{% endblock body %}

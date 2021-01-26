@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Rento | {% block title %}{% endblock title %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  
+  <body class="bg-light">
+    <!-- navabar start -->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand ps-5" href="{% url 'admindashboard' %}">Rento</a>
+          <div class="{% block navhide %}{% endblock navhide %}">
+            <ul class="nav navbar-nav ms-auto">
+              <li class="nav-item dropdown me-5">
+                <a href="index.html text-light" role="button" data-bs-toggle="dropdown" style="color:#FFFFFF;">{{request.user}}<i class="fa fa-2x fa-user ps-3"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'adminchangepassword' %}">Change Password</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutadmin' %}">Log Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- navbar end -->
+    <!-- dashboard start -->
+    <div class="container-fluid {% block hide %}{% endblock hide %}" style="background-color: #404040;bottom:0;">
+      <div class="row">
+        <div class="sidebar col-md-3 col-lg-2" style="background-color: #404040; height:690px;">       
+            <ul class="list-unstyled mx-auto mt-2 mb-2 mb-lg-0 py-2 ps-3">
+              <li class="nav-item mx-2 py-2">
+                <a class="nav-link active" aria-current="page" href="{% url 'admindashboard' %}">Dashboard</a>
+              </li>
+              <li class="nav-item mx-2 py-2">
+                <a class="nav-link active" aria-current="page" href="{% url 'adminroomlist' %}">Room List</a>
+              </li>
+              <li class="nav-item mx-2 py-2">
+                <a class="nav-link active" aria-current="page" href="{% url 'admincomplaint' %}">Complaint</a>
+              </li>
+              <li class="nav-item mx-2 py-2">
+                <a class="nav-link " href="{% url 'adminfeature' %}">Feature Room</a>
+              </li>
+            </ul>
+        </div>
+    
+        {% block body %}
+        {% endblock body %}
+      </div>
+    </div>
+    {% block login %}
+    {% endblock login %}
+    <!-- footer start -->
+<div style="background-color: #000000;">
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" >
+    © 2020 Copyright: Rento
+    </div>
+    <!-- Copyright -->
+</div>
+<!-- footer end -->
+<!-- Separate Popper and Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<script language="JavaScript" type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>

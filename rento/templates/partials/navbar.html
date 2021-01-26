@@ -1,0 +1,84 @@
+
+ {% comment %} {% if request.user.groups.all.0|slugify == 'rento_admin'  %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand ps-5" href="{% url 'admindashboard' %}">Rento</a>
+          <div class="{% block navhide %}{% endblock navhide %}">
+            <ul class="nav navbar-nav ms-auto">
+              <li class="nav-item dropdown me-5">
+                <a href="index.html text-light" role="button" data-bs-toggle="dropdown" style="color:#FFFFFF;">admin<i class="fa fa-2x fa-user ps-3"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'admindashboard' %}">Dashboard</a></li>
+                  <li><a class="dropdown-item" href="{% url 'adminchangepassword' %}">Change Password</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutadmin' %}">Log Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    {% else %} {% endcomment %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand ps-5" href="{% url 'index' %}">Rento</a>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul name="navbarMenu" class="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li class="nav-item mx-2">
+                <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="{% url 'rooms' %}">Rooms</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="{% url 'about' %}">About Us</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+              </li>
+            </ul>
+            {% if user.is_authenticated %}
+            {% if request.user.groups.all.0|slugify != 'rento_admin'  %}
+            <ul class="nav navbar-nav">
+              <li class="nav-item dropdown me-5">
+                <a href="index.html text-light" role="button" data-bs-toggle="dropdown" style="color:#FFFFFF;">{{request.user}}<i class="fa fa-2x fa-user ps-3"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutuser' %}">Log Out</a></li>
+                </ul>
+              </li>
+            </ul> 
+            {%else%}
+            <ul class="nav navbar-nav ms-auto">
+              <li class="nav-item dropdown me-5">
+                <a href="index.html text-light" role="button" data-bs-toggle="dropdown" style="color:#FFFFFF;">{{request.user}}<i class="fa fa-2x fa-user ps-3"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'admindashboard' %}">Dashboard</a></li>
+                  <li><a class="dropdown-item" href="{% url 'adminchangepassword' %}">Change Password</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutadmin' %}">Log Out</a></li>
+                </ul>
+              </li>
+            </ul> 
+            {% endif %}
+            {% else %}
+            <ul class="nav navbar-nav navbar-right">
+              <li class="nav-item dropdown mx-2 me-5"><a href="{% url 'user-login' %}" style="color:#FFFFFF;">Login<i class="fa fa-2x fa-user ps-3" ></i></a></li>
+            </ul>
+            {% endif  %}
+          </div>
+        </div>
+      </nav>
+    </header>
+  {% comment %} {% endif %} {% endcomment %}
+<!-- navbar end -->

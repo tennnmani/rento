@@ -1,0 +1,141 @@
+{% extends 'user/base.html' %}
+{% block title %}Feature Room{% endblock title %}
+{% block body %}
+    <!-- dashboard start -->
+        <div class="col-md-9 col-lg-10" style="background-color: #4d4d4d;">
+          <div class="container pt-3">
+            <h5 class="text-light">Room List</h5>
+            <div style="overflow-x:auto;">
+            <table class="table table-bordered bg-light mb-0">
+            <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Total Views</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in rooms %}
+                <tr>
+                  <th scope="row">{{forloop.counter0|add:rooms.start_index}}</th>
+                  <td><a href="{% url 'roomdetail' room.pk%}">{{room.id}}</a></td>
+                  <td>{{room.location}}</td>
+                  <td>{{room.price}}</td>
+                  <td>{{room.views}}</td>
+                  <td>
+                  {% if room.room_status == 'private' and room.blocked == False %}
+                    <button type="button" class="btn btn-dark btn-sm m-0" disabled>Room Private</button>
+                    {% elif room.featured == 'not_featured' and room.blocked == False or room.featured == '0' %}
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'feature_request' room.pk%}">Request
+                      Feature</a>
+                    {% elif  room.featured == 'featured' and room.blocked == False %}
+                    <button type="button" class="btn btn-dark btn-sm m-0" disabled>Room Featured</button>
+                    {% elif room.featured == 'feature_request' and room.blocked == False %}
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'cancel_feature' room.pk%}" >Cancel Request</a>
+                    {% elif room.blocked == True %}
+                    <button type="button" class="btn btn-dark btn-sm m-0" disabled>Room Blocked</button>
+                    {% else %}
+                    <button type="button" class="btn btn-dark btn-sm m-0" disabled>Request Denied</button>
+                  {% endif %}
+                  </td>
+                  <td>
+                    {% if room.room_status == 'private' and room.blocked == False %}
+                    Private rooms can't be featured
+                    {% elif room.featured == 'not_featured' and room.blocked == False or room.featured == '0' %}
+                    Not Featured
+                    {% elif  room.featured == 'featured' and room.blocked == False %}
+                    Featured for {{room.day_remaning}} days
+                    {% elif room.featured == 'feature_request' and room.blocked == False %}
+                    Feature Requset in process
+                    {% elif room.blocked == True %}
+                    Room Blocked
+                    {% else %}
+                    Disabled for {{room.day_remaning}} days
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}   
+              </tbody>
+            </table>
+            </div>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-6">
+              <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{rooms.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-6">
+             <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+        </div>
+          
+              <div class="container pt-3 pb-3 ">
+                
+            <h5 class="text-light">Featured List</h5>
+            <div style="overflow-x:auto;">
+            <table class="table table-bordered bg-light mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Total Views</th>
+                  <th scope="col">Featured Date</th>
+                  <th scope="col">Days Left</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in f_rooms %}
+                
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{room.id}}</td>
+                  <td>{{room.location}}</td>
+                  <td>{{room.price}}</td>
+                  <td>{{room.views}}</td>
+                  <td>{{room.featured_date}}</td>
+                  <td>{{room.day_remaning}}</td>
+                  <td>
+                    <a type="button" href="{% url 'roomdetail' room.pk%}" class="btn btn-primary btn-sm m-0">View Room</a>
+                  </td>
+                </tr>
+               
+                
+            {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          </div>
+          
+            
+        </div>
+      </div>
+    <!-- dashboard end -->
+{% endblock body %}

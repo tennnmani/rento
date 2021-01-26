@@ -1,0 +1,131 @@
+{% extends 'useradmin/base.html' %}
+{% block title %}Admin Feature{% endblock title %}
+{% block body %}
+        <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block" style="background-color: #4d4d4d; ">
+          <div class="container pt-3">
+            <h5 class="text-light">Featured List</h5>
+            <table class="table table-bordered bg-light mb-0">
+             <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Room Owner</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Times Feaured</th>
+                  <th scope="col">Featured Date</th>
+                  <th scope="col">Days Left</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in f_rooms %}
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{room.id}}</td>
+                  <td>{{room.user}}</td>
+                  <td>{{room.location}}</td>
+                  <td>{{room.price}}</td>
+                  <td>{{room.times_featured}}</td>
+                  <td>{{room.featured_date}}</td>
+                  <td>{{room.day_remaning}}</td>
+                  <td>
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'roomdetail' room.pk%}">View Room Detail</a>
+                    <a type="button" class="btn btn-danger btn-sm m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{room.pk}}" >Remove</a>
+                     
+                    <div class="modal fade" id="DeleteModal{{room.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="DeleteModalLabel">Are you sure you want to remove this room from Featured?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a type="submit" class="btn btn-primary btn-ok" href="{% url 'remove_feature' room.pk%}">Yes</a>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+
+        <div class="container pt-3 pb-3">
+            <h5 class="text-light">Featured Request</h5>
+            <table class="table table-bordered bg-light mb-0">
+             <thead>
+                <tr>
+                  <th scope="col">SN</th>
+                  <th scope="col">Room Tag</th>
+                  <th scope="col">Room Owner</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Times Feaured</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for room in rooms %}
+                <tr>
+                  <th scope="row">{{forloop.counter0|add:rooms.start_index}}</th>
+                  <td>{{room.id}}</td>
+                  <td>{{room.user}}</td>
+                  <td>{{room.location}}</td>
+                  <td>{{room.price}}</td>
+                  <td>{{room.times_featured}}
+                   
+                  </td>
+                  <td>
+                    <a type="button" class="btn btn-primary btn-sm m-0"  href="{% url 'roomdetail' room.pk%}" >View Room Detail</a>
+                    {% if counters.counter < 8 %}
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'feature_accept' room.pk%}" >Approved</a>
+                    {% else %}
+                    <button type="button" class="btn btn-primary btn-sm m-0" disabled>Approved</button>
+                    
+                    {% endif %}
+                    <a type="button" class="btn btn-primary btn-sm m-0" href="{% url 'decline_feature' room.pk%}">Discard</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-6">
+              <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{rooms.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-6">
+             <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                  {% if rooms.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rooms.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rooms.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+            </nav>
+          </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+ 
+{% endblock body %}

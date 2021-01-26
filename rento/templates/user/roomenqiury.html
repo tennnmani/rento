@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}EnquiryDetail{% endblock title %}
+{% block body %}
+<div class="container mb-4 pb-3" style="background-color: #404040;">
+    <!-- photo box start -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 " id="actualImage">
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if enquirys.room.image1 %}{{enquirys.room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        onclick="updateSource" style="width:100%; height:119px;">
+                </div>
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if enquirys.room.image2 %}{{enquirys.room.image2.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        style="width:100%; height:119px;">
+                </div>
+                <div class="mb-2 pt-5">
+                    <img class="img-thumbnail"
+                        src="{% if enquirys.room.image3 %}{{enquirys.room.image3.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                        style="width:100%; height:119px;">
+                </div>
+            </div>
+            <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block">
+                <img id="clickedImage" width="1020" height="380" class="img-fluid"
+                    src="{% if enquirys.room.image1 %}{{enquirys.room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+                    class="rounded-0" alt="...">
+            </div>
+        </div>
+    </div>
+    <!-- photo box end -->
+    <div class="container py-3 px-3" style="background-color: #4d4d4d;">
+        <!-- detail box start -->
+        <div class="py-1 px-1">
+            <ul class="list-unstyled list-inline" style="font-size:12px">
+                <li class="text-light">Date Posted: {{enquirys.room.date_posted}}</li>
+                <li class="text-light">{{enquirys.room.location}}</li>
+            </ul>
+        </div>
+        <div class="row">
+            {% comment %} room detail {% endcomment %}
+            <div class="col-lg-7 text-light">
+                <h4>For Room</h4>
+                <div class="pt-3">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item text-light">room tag:</li>
+                        <li class="list-inline-item text-light">{{enquirys.room.id}}</li>
+                    </ul>
+                </div>
+                <div class="">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item text-light">Price:</li>
+                        <li class="list-inline-item text-light">Rs {{enquirys.room.price}}</li>
+                    </ul>
+                </div>
+                <div class="">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item text-light">House Number :</li>
+                        <li class="list-inline-item text-light ">{{enquirys.room.house_number}}</li>
+                    </ul>
+                </div>
+
+                <div class="">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item text-light">Facilities :</li>
+                        <li class="list-inline-item text-light">{% if enquirys.room.water %}Water{% endif %}</li>
+                        <li class="list-inline-item text-light">{% if enquirys.room.parking %}Parking{% endif %}</li>
+                        <li class="list-inline-item text-light">{% if enquirys.room.internet %}Internet{% endif %}</li>
+                    </ul>
+                </div>
+
+                <div class="">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item text-light">Description :</li>
+                        <li class="list-inline-item text-light ">{{enquirys.room.description}}</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 text-light">
+                <h4>Enquiry Detail</h4>
+                <div class=" pt-3 text-light">
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">Enquiry Sent By:</li>
+                            <li class="list-inline-item text-light">{{enquirys.name}}</li>
+                        </ul>
+
+
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">phone:</li>
+                            <li class="list-inline-item text-light">{{enquirys.phone}}</li>
+                        </ul>
+
+
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">email:</li>
+                            <li class="list-inline-item text-light">{{enquirys.email}}</li>
+                        </ul>
+
+
+                    </div>
+
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">address:</li>
+                            <li class="list-inline-item text-light">{{enquirys.address}}</li>
+                        </ul>
+
+
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">occupation:</li>
+                            <li class="list-inline-item text-light">{{enquirys.occupation}}</li>
+                        </ul>
+
+
+                    </div>
+                    <div class="">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item text-light">Message:</li>
+                            <li class="list-inline-item text-light">{{enquirys.question}}</li>
+                        </ul>
+
+                        <div class="col text-end">
+                            <a type="button" class="btn btn-danger btn m-0" data-bs-toggle="modal" data-bs-target="#DeleteModal{{enquirys.pk}}" >Delete</a>
+                     
+                      <div class="modal fade" id="DeleteModal{{enquirys.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title text-dark" id="DeleteModalLabel">Do you want to confirm Delete Enquiry?</h5>
+                              
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a type="submit" class="btn btn-primary btn-ok" href="{% url 'enqiurydelete' enquirys.pk %}">Yes</a>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} end enquiry detail {% endcomment %}
+        </div>
+        <!-- detail box end -->
+
+    </div>
+
+</div>
+{% endblock body %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Listen for clicks to "img" elements inside the element where id="sinistra"
+        $("#actualImage img").click(function () {
+            // Displays the source of the image clicked
+            $('#clickedImage').attr('src', $(this).attr("src"));
+        });
+    });
+</script>
+{% endblock script %}

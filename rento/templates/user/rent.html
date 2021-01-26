@@ -1,0 +1,133 @@
+{% extends 'user/base.html' %}
+{% block title %}AddRoom{% endblock title %}
+{% block body %}
+    <!-- dashboard start -->
+        <div class="col-md-9 col-lg-10 pb-3" style="background-color: #4d4d4d;">
+          <div class="container pt-3">
+            <h5 class="text-light">Room List</h5>
+            {% for message in messages %}
+              
+            <p id="error" style="color:red">{{message}}</p>
+              
+            {% endfor %}
+            <div style="overflow-x:auto;">
+              <table class="table table-bordered bg-light mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">Room Tag</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Last Paid Date</th>
+                    <th scope="col">Amount Given</th>
+                    <th scope="col">Advance Amount</th>
+                    <th scope="col">Due till Date</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for rent in rents %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter0|add:rents.start_index }}</th>
+                    <td>{{rent.room_tag}}</td>
+                    <td>{{rent.amount}}</td>
+                    <td>{{rent.date_paid}}</td>
+                    <td>{{rent.amount_paid}}</td>
+                    <td>{{rent.advance}}</td>
+                    <td>{{rent.due}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary btn-sm m-0" data-bs-toggle="modal" data-bs-target="#PayModal{{rent.room_tag}}">Input Rent Information</button>
+                      {% comment %} <button type="button" class="btn btn-primary btn-sm m-0">Edit</button> {% endcomment %}
+                      <div class="modal fade" id="PayModal{{rent.room_tag}}" tabindex="-1" aria-labelledby="PayModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="PayModalLabel">Rent Information</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{% url 'payrent' rent.room_tag%}" method="POST">
+                                {% csrf_token %}
+                                <div class="row g-3 justify-content-center align-items-center mb-3">
+                                  <div class="col-lg-5">
+                                    <label for="datePaid" class="col-form-label">Date:</label>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <input type="text" id="datePaid" name="datepaid" class="form-control" value="{{today_date|date:"Y-m-d"}}" readonly="readonly">
+                                  </div>
+                                </div>
+                                <div class="row g-3 justify-content-center align-items-center mb-3">
+                                  <div class="col-lg-5">
+                                    <label for="advanceAmount" class="col-form-label">Advance Amount:</label>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <input type="text" id="advanceAmount" name="advance" class="form-control" value="{{rent.advance}}" readonly="readonly">
+                                  </div>
+                                </div>
+                                <div class="row g-3 justify-content-center align-items-center mb-3">
+                                  <div class="col-lg-5">
+                                    <label for="dueAmount" class="col-form-label">Due Amount:</label>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <input type="text" id="dueAmount" name="due" class="form-control" value="{{rent.due}}" readonly="readonly">
+                                  </div>
+                                </div>
+                                <div class="row g-3 justify-content-center align-items-center mb-3">
+                                  <div class="col-lg-5">
+                                    <label for="paidAmount" class="col-form-label">Amount paid:</label>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <input type="text" id="paidAmount" name="amountgiven" class="form-control" >
+                                  </div>
+                                </div>
+                                <div class="row g-3 justify-content-center">
+                                  <div class="col-lg-5 text-end">
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <button type="cancel" class="btn btn-primary" data-bs-dismiss="modal" >Cancel</button>
+                                </div>
+                              </form>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{rent.rent_status}}</td>
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </div>
+            <div class="bg-light pt-2 pe-2">
+              <div class="row">
+              <div class="col-6">
+              <p class="fw-bold d-flex ps-3 justify-content-start">Showing {{rents.end_index}} of {{count}}</p>
+            </div>
+            <div class="col-6">
+             <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  {% if rents.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rents.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                  {% endif %}
+                  {% for i in rents.paginator.page_range %}
+                    {% if rents.number == i %}
+                      <li class="page-item active"><a class="page-link">{{ i }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if rents.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ rents.next_page_number }}">Next</a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+                  {% endif %}
+                  </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+    <!-- dashboard end -->
+{% endblock body %}
