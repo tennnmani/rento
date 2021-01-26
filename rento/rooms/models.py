@@ -52,6 +52,7 @@ class Room(models.Model):
     #rooms
     bedroom = models.PositiveSmallIntegerField(default=1)
     bathroom = models.PositiveSmallIntegerField(default=1)
+    kitchen = models.PositiveSmallIntegerField(default=0)
 
     description     = models.TextField(max_length=500,blank=False, null=False)
     date_posted = models.DateField(auto_now_add=True)

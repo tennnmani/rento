@@ -56,10 +56,15 @@ def addroom(request):
             data.water = addroomform.cleaned_data['water']
             data.internet = addroomform.cleaned_data['internet']
             data.parking = addroomform.cleaned_data['parking']
+            data.c_parking = addroomform.cleaned_data['c_parking']
+            data.bedroom = addroomform.cleaned_data['bedroom']
+            data.bathroom = addroomform.cleaned_data['bathroom']
+            data.kitchen = addroomform.cleaned_data['kitchen']
             data.description = addroomform.cleaned_data['description']
             data.user.total_rooms = data.user.total_rooms +1
             data.user.save()
             data.save()
+            messages.success(request, "Room was successfully created")
             return redirect('dashboard')
     args = {
         'addroomform': addroomform
@@ -116,6 +121,7 @@ def editroom(request, pk):
                         counters.counter = counters.counter - 1
                         counters.save()
                 form.save()
+                messages.success(request, "Room was successfully edited")
                 return redirect('viewroom')
     return render(request, 'user/editroom.html',context)
 
@@ -198,6 +204,8 @@ def roomdetail(request, pk):
     rooms = Room.objects.get(id=pk)
     enquiryform = EnquiryForm()
     reportform = reportForm()
+    if rooms.user != request.user and rooms.room_status!="public" or rooms.blocked==True:
+        return redirect('home')
     if rooms.user != request.user:
         rooms.views = rooms.views + 1
         rooms.user.total_views = rooms.user.total_views + 1
@@ -220,7 +228,7 @@ def deleteroom(request, pk):
         counters = counter.objects.get(id=1)
         counters.counter = counters.counter - 1
         counters.save()
-    messages.success(request, ('Room no {} was deleted ').format(rooms.id))
+    messages.info(request, ('Room no {} was deleted ').format(rooms.id))
     rooms.delete()
     rooms.user.save()
     
@@ -230,6 +238,12 @@ def deleteroom(request, pk):
 def privateroom(request, pk):
     rooms = Room.objects.get(id = pk)
     rooms.room_status = 'private'
+    if rooms.featured == 'featured':
+        rooms.featured = 'not_featured'
+        c = counter.objects.get(id = 1)
+        c.counter = c.counter - 1
+        c.save()
+        rooms.save()
     rooms.save()
     return redirect('viewroom')
 
@@ -243,6 +257,12 @@ def publicroom(request, pk):
 def d_privateroom(request, pk):
     rooms = Room.objects.get(id = pk)
     rooms.room_status = 'private'
+    if rooms.featured == 'featured':
+        rooms.featured = 'not_featured'
+        c = counter.objects.get(id = 1)
+        c.counter = c.counter - 1
+        c.save()
+        rooms.save()
     rooms.save()
     return redirect('dashboard')
 
