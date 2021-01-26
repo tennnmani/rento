@@ -2,53 +2,71 @@
 {% load static %}
 {% block title %}RoomDetail{% endblock title %}
 {% block body %}
-    <div class="container" style="background-color: #404040;">
-      {% for message in messages %}
-      {% if 'success' in message.tags %}
-      <p id="success" style="color:rgb(207, 186, 186)">
-        <div class="alert alert-success" role="alert">
-          {{message}}
-        </div></p>
-     
-      {% endif %}
-      {% if 'info' in message.tags %}
-      <p id="info" style="color:red">{{message}}</p>
-      {% endif %}
-      {% endfor %}
-      <!-- photo box start -->
-      <div class="container py-5">
-        <div class="row">
-          <div class="col-md-3 col-lg-2 "  id="actualImage">
-            <div class="mb-2 pt-5" >
-              <img class="img-thumbnail" src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" onclick="updateSource" style="width:100%; height:119px;">
-            </div>
-            <div class="mb-2 pt-5">
-              <img class="img-thumbnail" src="{% if rooms.image2 %}{{rooms.image2.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" style="width:100%; height:119px;">
-            </div>
-            <div class="mb-2 pt-5">
-              <img class="img-thumbnail" src="{% if rooms.image3 %}{{rooms.image3.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" style="width:100%; height:119px;">
-            </div>
-          </div>
-          <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block">
-              <img id="clickedImage" width="1020" height="380" class="img-fluid" src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class="rounded-0" alt="...">
-          </div>
+<div class="container" style="background-color: #404040;">
+  {% for message in messages %}
+  {% if 'success' in message.tags %}
+  <p id="success">
+  <div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+  </p>
+
+  {% endif %}
+  {% if 'info' in message.tags %}
+  <p id="info">
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+  </p>
+  {% endif %}
+  {% endfor %}
+  <!-- photo box start -->
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 " id="actualImage">
+        <div class="mb-2 pt-5">
+          <img class="img-thumbnail"
+            src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+            onclick="updateSource" style="width:100%; height:119px;">
+        </div>
+        <div class="mb-2 pt-5">
+          <img class="img-thumbnail"
+            src="{% if rooms.image2 %}{{rooms.image2.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+            style="width:100%; height:119px;">
+        </div>
+        <div class="mb-2 pt-5">
+          <img class="img-thumbnail"
+            src="{% if rooms.image3 %}{{rooms.image3.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+            style="width:100%; height:119px;">
         </div>
       </div>
-      <!-- photo box end -->
-      <div class="container py-3 px-3" style="background-color: #4d4d4d;">
-       
-      <!-- detail box start -->
-      <div class="container py-3">
-        <div class="py-1 px-1">
-            <ul class="list-unstyled list-inline text-end" style="font-size:12px">
-              <li class="text-light">Date Posted: {{rooms.date_posted}}</li>
-              <li class="text-light">{{rooms.location}}</li>
-            </ul>
-          </div>
+      <div class="col-lg-10 d-none d-sm-none d-md-block d-lg-block">
+        <img id="clickedImage" width="1020" height="380" class="img-fluid"
+          src="{% if rooms.image1 %}{{rooms.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+          class="rounded-0" alt="...">
+      </div>
+    </div>
+  </div>
+  <!-- photo box end -->
+  <div class="container py-3 px-3" style="background-color: #4d4d4d;">
+    <!-- detail box start -->
+    <div class="container py-3">
+      <div class="py-1 px-1">
+        <ul class="list-unstyled list-inline " style="font-size:12px">
+          <li class="text-light">Date Posted: {{rooms.date_posted}}</li>
+          <li class="text-light">{{rooms.location}}</li>
+          <hr class="text-light">
+          <h5 class="text-light text-center">Room ID: {{rooms.id}}</h5>
+          <hr class="text-light">
+        </ul>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-7 text-light" >
+          
           <div class="">
             <ul class="list-unstyled list-inline">
-              <li class="list-inline-item text-light">Posted By : </li>
-             
+              <li class="list-inline-item text-light">Posted By :</li>
               <li class="list-inline-item text-light fw-bold text-capitalize">{{rooms.user}}</li>
             </ul>
           </div>
@@ -64,33 +82,188 @@
               <li class="list-inline-item text-light ">{{rooms.house_number}}</li>
             </ul>
           </div>
-         
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Floor :</li>
+              <li class="list-inline-item text-light ">{{rooms.floor}}</li>
+            </ul>
+          </div>
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Rooms :</li>
+              <li class="list-inline-item text-light ">BedRoom {{ rooms.bedroom }}</li>
+              <li class="list-inline-item text-light ">Bathroom {{ rooms.bathroom }}</li>
+              <li class="list-inline-item text-light ">Kitchen {{ rooms.kitchen }}</li>
+            </ul>
+          </div>
+
+
           <div class="">
             <ul class="list-unstyled list-inline">
               <li class="list-inline-item text-light">Facilities :</li>
-              <li class="list-inline-item text-light">{% if rooms.water %}Water{% endif %}</li>
-              <li class="list-inline-item text-light">{% if rooms.parking %}Parking{% endif %}</li>
-              <li class="list-inline-item text-light">{% if rooms.internet %}Internet{% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.water %}<i class='fa fa-tint'
+                  style="color:#0088fd;"></i> Water {% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.internet %}<i class='fa fa-wifi'
+                  style="color:black;"></i> Internet{% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.parking %}<i class='fa fa-motorcycle'></i> Bike
+                Parking:
+                {{ rooms.parking }}{% endif %}</li>
+              <li class="list-inline-item text-light">{% if rooms.c_parking %}<i class='fa fa-car'></i> Car Parking: 
+                {{rooms.c_parking }}{% endif %}</li>
             </ul>
           </div>
-          
+
+          <div class="">
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item text-light">Description :</li>
+              <li class="list-inline-item text-light ">{{rooms.description}}</li>
+            </ul>
+          </div>
+        </div>
+        {% if enquirys %}
+
+        <div class="col-lg-3 text-light">
+          <h4>Enquiry Detail</h4>
+          <div class=" pt-3 text-light">
             <div class="">
               <ul class="list-unstyled list-inline">
-                <li class="list-inline-item text-light">Description :</li>
-                <li class="list-inline-item text-light ">{{rooms.description}}</li>
+                <li class="list-inline-item text-light">Enquiry Sent By:</li>
+                <li class="list-inline-item text-light">{{enquirys.name}}</li>
               </ul>
+
+
             </div>
-            
-            
-          
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">phone:</li>
+                <li class="list-inline-item text-light">{{enquirys.phone}}</li>
+              </ul>
+
+
+            </div>
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">email:</li>
+                <li class="list-inline-item text-light">{{enquirys.email}}</li>
+              </ul>
+
+
+            </div>
+
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">address:</li>
+                <li class="list-inline-item text-light">{{enquirys.address}}</li>
+              </ul>
+
+
+            </div>
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">occupation:</li>
+                <li class="list-inline-item text-light">{{enquirys.occupation}}</li>
+              </ul>
+
+
+            </div>
+            <div class="">
+              <ul class="list-unstyled list-inline">
+                <li class="list-inline-item text-light">Questions:</li>
+                <li class="list-inline-item text-light">{{enquirys.question}}</li>
+              </ul>
+
+              <div class="col text-end">
+                <a type="button" class="btn btn-danger btn m-0" data-bs-toggle="modal"
+                  data-bs-target="#DeleteModal{{enquirys.pk}}">Delete</a>
+
+                <div class="modal fade" id="DeleteModal{{enquirys.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-dark" id="DeleteModalLabel">Do you want to confirm Delete Enquiry?
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a type="submit" class="btn btn-primary btn-ok"
+                          href="{% url 'enqiurydelete' enquirys.pk %}">Yes</a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endif%}
+
+        {% if reports %}
+        <div class="col-lg-3 text-light">
+          <h4>Report Detail</h4>
+          <div class=" pt-3 text-light">
+              
+              <div class="">
+                  <ul class="list-unstyled list-inline">
+                      <li class="list-inline-item text-light">Report Type:</li>
+                      <li class="list-inline-item text-light">{{reports.report_type}}</li>
+                  </ul>
+              
+  
+              </div>
+              <div class="">
+                  <ul class="list-unstyled list-inline">
+                      <li class="list-inline-item text-light">Report Description:</li>
+                      <li class="list-inline-item text-light">{{reports.report_description}}</li>
+                  </ul>
+              
+                  <div class="">
+                      {% if report.room.blocked == True %}
+                      <button type="button" class="btn btn-primary mx-2 my-2" disabled>Room Blocked</button>
+                      {% else %}
+                      <a type="button" href="{% url 'c_blockroom' reports.pk%}" class="btn btn-primary mx-2 my-2 ">Block Room</a>
+                      {% endif %}
+                      <a type="button" href="{% url 'c_discard' reports.pk%}" class="btn btn-primary mx-2 my-2">Discard Report</a>
+                     
+                      <a type="button" class="btn btn-danger mx-2 my-2" data-bs-toggle="modal" data-bs-target="#DeleteModal{{reports.room.pk}}" >Delete Room</a>
+                      
+                      <div class="modal fade" id="DeleteModal{{reports.room.pk}}" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="DeleteModalLabel">Are you sure you want to Delete complaint?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a type="submit" class="btn btn-primary btn-ok" href="{% url 'admin_delete_c_room' reports.room.pk%}">Yes</a>
+                          </div>
+
+                          </div>
+                      </div>
+                      </div>
+                
+                    </div>
+              </div>
+          </div>
+      </div>
+        {%endif%}
+
         {% if request.user == rooms.user %}
+
+        {% elif request.user.groups.all.0|slugify == 'rento_admin'  %}
 
         {% else %}
         <div class="row">
           <div class="col">
-            <a  class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#EnquiryModal" >Enquiry</a>
+            <a class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#EnquiryModal">Enquiry</a>
           </div>
-          <div class="modal fade" id="EnquiryModal" tabindex="-1" aria-labelledby="EnquiryModalLabel" aria-hidden="true">
+          <div class="modal fade" id="EnquiryModal" tabindex="-1" aria-labelledby="EnquiryModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -133,7 +306,7 @@
             </div>
           </div>
           <div class="col text-end">
-            <a  class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#ReportModal" >Report</a>
+            <a class='btn btn-primary mt-2' data-bs-toggle="modal" data-bs-target="#ReportModal">Report</a>
           </div>
           <div class="modal fade" id="ReportModal" tabindex="-1" aria-labelledby="ReportModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -154,7 +327,7 @@
                         <option value="misleading_description">Misleading Descriptions</option>
                         <option value="other">Other</option>
                       </select> -->
-                    </div> 
+                    </div>
                     <div class="mt-3 mb-3">
                       <label for="report_description">Report Description:</label>
                       <div> {{ reportform.report_description }}</div>
@@ -165,60 +338,94 @@
                   </form>
                 </div>
               </div>
-          
+
             </div>
           </div>
         </div>
         {% endif %}
       </div>
-      <!-- detail box end -->
-      </div>
-      <!-- Similar room start -->
-      <section class="container my-5">
-        <div class="container">
-          <h2 class="text-light mb-5">Similar Rooms</h2>
-        </div>
-        <div class="row container mt-3">
-        {% for roomlist in similarroom|slice:"4" %}
-          <div class='col-lg-3 col-md-6 col-12 mb-5'>
-             <div id="roomCard" class='card'>
-                      <a href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if roomlist.image1 %}{{roomlist.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190" alt='Rento'></a>
-                      <div class='card-body'>
-                        <h5 class='card-title' >Price: {{roomlist.price}}</h5>
-                        <hr>
-                        <p class='card-text '>
-                          {{roomlist.location}}
-                        </p>
-                        <hr>
-                        <p class='card-text'>
-                          Facilities:
-                        </p>
-                        <p class='card-text'>
-                          {% if roomlist.water %}Water{% endif %}
-                          {% if roomlist.parking %}Parking{% endif %}
-                          {% if roomlist.internet %}Internet{% endif %}
-                        </p>
-                        <hr>
-                        <a  class='btn btn-primary mt-2' href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
-                      </div>
-                    </div>
-          </div>
-        {%endfor%}
-          
-        </div>
-      </section>
-      <!-- Similar room start -->
+    </div>
+    <!-- detail box end -->
   </div>
+
+
+
+
+
+
+
+  <!-- Similar room start -->
+  <section class="container my-5">
+    <div class="container">
+      {% if not enquirys  %}
+      {% if not reports  %}
+      <h2 class="text-light mb-5">Similar Rooms</h2>
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="row container mt-3">
+      {% for roomlist in similarroom|slice:"4" %}
+      <div class='col-lg-3 col-md-6 col-12 mb-5'>
+        <div id="roomCard" class='card'>
+          <a href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img
+              src="{% if roomlist.image1 %}{{roomlist.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}"
+              class='card-img-top' height="190" alt='Rento'></a>
+          <div class='card-body'>
+            <p class='card-text text-end'>
+              Room ID: {{ roomlist.id }}
+            </p>
+            <h5 class='card-title'>Price: {{roomlist.price}}</h5>
+            <hr>
+            <p class='card-text '>
+              {{roomlist.location}}
+            </p>
+            <hr>
+            <p class='card-text'>
+            <b>Rooms:</b>
+            </p>
+            <p class='card-text'>
+              BedRoom : <i><b>{{ roomlist.bedroom }}</b></i>
+              Bathroom : <i><b>{{ roomlist.bathroom }}</b></i><br>
+              Kitchen : <i><b>{{ roomlist.kitchen }}</b></i>
+            </p>
+            <hr>
+            <p class='card-text'>
+              <b>Facilities:</b>
+            </p>
+            <p class='card-text'>
+              {% if roomlist.water == True %}
+              <i class='fa fa-tint' style="color:#0088fd;"></i> Water
+              {% endif %}
+              {% if roomlist.internet == True %}
+              <i class='fa fa-wifi' style="color:black;"></i> Internet
+              {% endif %}
+            </p>
+            <hr>
+            <div style="float:right;">
+              <a class='btn btn-primary mt-2'
+                href="{%if roomlist.pk %}{% url 'roomdetail' roomlist.pk%}{%else%}{% url 'roomdetail'%}{%endif%}">Detail</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+
+    </div>
+  </section>
+  <!-- Similar room start -->
+  
+</div>
+
 {% endblock body %}
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-      $(document).ready(function () {
-        // Listen for clicks to "img" elements inside the element where id="sinistra"
-        $("#actualImage img").click(function () {
-          // Displays the source of the image clicked
-          $('#clickedImage').attr('src',$(this).attr("src"));
-        });
-      });
-  </script>
+  $(document).ready(function () {
+    // Listen for clicks to "img" elements inside the element where id="sinistra"
+    $("#actualImage img").click(function () {
+      // Displays the source of the image clicked
+      $('#clickedImage').attr('src', $(this).attr("src"));
+    });
+  });
+</script>
 {% endblock script %}

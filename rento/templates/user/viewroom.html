@@ -7,8 +7,22 @@
             <h5 class="text-light">Room List</h5>
             
             {% for message in messages %}
-            <p id="nfo" style="color:rgb(250, 26, 26)">{{message}}</p>
-            {% endfor %}
+              {% if 'success' in message.tags %}
+              <p id="success">
+              <div class="alert alert-success" role="alert">
+                {{message}}
+              </div>
+              </p>
+
+              {% endif %}
+              {% if 'info' in message.tags %}
+              <p id="info">
+              <div class="alert alert-danger" role="alert">
+                {{message}}
+              </div>
+              </p>
+              {% endif %}
+              {% endfor %}
 
             {% if not rooms %}
                     <p class="text-light"> You havent added any rooms. Please add a room to view this page</p>

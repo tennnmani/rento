@@ -22,9 +22,9 @@
               </div>
               <div class="bg-dark mb-2 pt-2">
                 <label class="ms-3">Facility:</label>
-                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility1" name="water" value="True"  {% if values.facility1 == "True" %}checked{% endif%}> Water</label>
-                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility2" name="internet" value="True" {% if values.facility2 == "True" %}checked{% endif%}> Internet</label>
-                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility3" name="parking" value="True" {% if values.facility3 == "True" %}checked{% endif%}> Parking</label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility1" name="water" value="True"  {% if values.facility1 == "True" %}checked{% endif%}> Water <i class='fa fa-tint' style="color:#0088fd;"></i></label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility2" name="internet" value="True" {% if values.facility2 == "True" %}checked{% endif%}> Internet <i class='fa fa-wifi' style="color:white;"></i></label>
+                <label class="nav-link text-light active"><input class="form-check-input" type="checkbox" id="facility3" name="parking" value="True" {% if values.facility3 == "True" %}checked{% endif%}> Parking <i class='fa fa-car' style="color:white;"></i></label>
               </div>
               <div class="bg-dark pt-2">
                 <label class="ms-3 mb-2">Price:</label><br>
@@ -80,11 +80,13 @@
                       <div id="roomCard" class='card'>
                         <a href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if room.image1 %}{{room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190"alt='Rento'></a>
                         <div class='card-body'>
+                          <p class='card-text text-end'>
+                            Room ID: {{ room.id }}
+                          </p>
                           <h5 class='card-title' >Price: {{ room.price }}</h5>
                           <hr>
                           <p class='card-text '>
-                            {{ room.location }} //
-                            {{ room.user }}
+                            {{ room.location }}
                           </p>
                           <hr>
                           <p class='card-text'>
@@ -92,17 +94,19 @@
                           </p>
                           <p class='card-text'>
                             {% if room.water == True %}
-                            Water
+                            <i class='fa fa-tint' style="color:#0088fd;"></i> Water 
                             {% endif %}
                             {% if room.internet == True %}
-                            Internet
+                            <i class='fa fa-wifi' style="color:black;"></i> Internet
                             {% endif %}
                             {% if room.parking == True %}
-                            Parking
+                            <i class='fa fa-car' style="color:black;"></i> Parking
                             {% endif %}
                           </p>
                           <hr>
-                          <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                          <div style="float:right;">
+                            <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                          </div>
                         </div>
                       </div>
                                         

@@ -1,5 +1,5 @@
 {% extends 'user/base.html' %}
-{% block title %}AddRoom{% endblock title %}
+{% block title %}EditRoom{% endblock title %}
 {% block body %}
     <!-- dashboard start -->
         <div class="col-lg-10" style="background-color: #4d4d4d;">
@@ -45,6 +45,23 @@
               </div>
               <div class="row g-3 align-items-center mb-3">
                 <div class="col-lg-2">
+                  <label for="facility" class="col-form-label">Rooms:</label>
+                </div>
+              <div class="col-lg-auto">
+                <label for="parking" class="col-form-label ps-2">Bedroom</label>
+                {{ form.bedroom }}
+              </div>
+              <div class="col-lg-auto">
+                <label for="parking" class="col-form-label ps-2">Bathroom</label>
+                {{ form.bathroom }}
+              </div>
+              <div class="col-lg-auto">
+                <label for="parking" class="col-form-label ps-2">Kitchen</label>
+                {{ form.kitchen }}
+              </div>
+              </div>
+              <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-2">
                   <label for="uploadImage" class="col-form-label">Image:</label>
                 </div>
                 <div class="col-lg-3">
@@ -57,23 +74,33 @@
                   {{ form.image3 }}
                 </div>
               </div>
+            
               <div class="row g-3 align-items-center mb-3">
                 <div class="col-lg-2">
                   <label for="facility" class="col-form-label">Facility:</label>
                 </div>
                 <div class="col-lg-auto">
-                {{ form.water }}
+                  {{ form.water }}
                   <label for="water" class="col-form-label ps-2">Water</label>
                 </div>
                 <div class="col-lg-auto">
-                {{ form.internet }}
+                  {{ form.internet }}
                   <label for="internet" class="col-form-label ps-2">Internet</label>
                 </div>
-                <div class="col-lg-auto">
-                {{ form.parking }}
-                  <label for="parking" class="col-form-label ps-2">Parking</label>
-                </div>
+            </div>
+            <div class="row g-3 align-items-center mb-3">
+              <div class="col-lg-2">
+                <label for="facility" class="col-form-label">Parking:</label>
               </div>
+            <div class="col-lg-auto">
+              <label for="parking" class="col-form-label ps-2">Bike Parking</label>
+              {{ form.parking }}
+            </div>
+            <div class="col-lg-auto">
+              <label for="parking" class="col-form-label ps-2">Car Parking</label>
+              {{ form.c_parking }}
+            </div>
+            </div>
               <div class="row g-3 align-items-center mb-3">
                 <div class="">
                   <label for="roomDetail" class="col-form-label">Description:</label>

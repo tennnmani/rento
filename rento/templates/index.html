@@ -18,14 +18,9 @@
             <p><a class="btn btn-md btn-primary" href="{% url 'registration' %}" role="button">Register</a> To Rent Your Room</p>
             {% endif %}
             <p>Find Room Of Your Choice</p>
-            <form class="d-flex form-inline justify-content-center">
-              <div class="input-group w-25">
-                <input type="text" class="form-control" placeholder="Search By Location" aria-label="Search" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
+              <div>
+                    <a class="justify-content-center btn btn-primary" href="{% url 'rooms' %}">Go To Rooms</a>
               </div>
-            </form>
           </div>
           <!-- carousel text end -->
           <div class="carousel-item active">
@@ -60,31 +55,57 @@
                 <div id="roomCard" class='card'>
                     <a href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}"><img src="{% if room.image1 %}{{room.image1.url}}{%else%}{% static 'image/default.jpg' %}{%endif%}" class='card-img-top' height="190"alt='Rento'></a>
                     <div class='card-body'>
+                      <p class='card-text text-end'>
+                      Room ID: {{ room.id }}
+                      </p>
                       <h5 class='card-title' >Price: {{ room.price }}</h5>
                       <hr>
                       <p class='card-text '>
-                        {{ room.location }} //
-                        {{ room.user }}
+                        {{ room.location }}
                       </p>
                       <hr>
                       <p class='card-text'>
-                        Facilities:
+                       <b> Rooms: </b>
                       </p>
                       <p class='card-text'>
-                        {% if room.water == True %}
-                        Water
-                        {% endif %}
-                        {% if room.internet == True %}
-                        Internet
-                        {% endif %}
-                        {% if room.parking == True %}
-                        Parking
-                        {% endif %}
+                            BedRoom : <i><b>{{ room.bedroom }}</b></i>
+                            Bathroom : <i><b>{{ room.bathroom }}</b></i>
+                            <br>
+                            Kitchen : <i><b>{{ room.kitchen }}</b></i>
                       </p>
                       <hr>
-                      <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
-                    </div>
+                      <p class='card-text'>
+                      <b> Facilities:</b>
+                      </p>
+                      <p class='card-text'>
+                            {% if room.water == True %}
+                            <i class='fa fa-tint' style="color:#0088fd;"></i> Water 
+                            {% endif %}
+                            {% if room.internet == True %}
+                            <i class='fa fa-wifi' style="color:black;"></i> Internet
+                            {% endif %}
+                      </p>
+                      <hr>
+                      <!-- <p class='card-text'>
+                        Parking:
+                      </p>
+                      <p clas='card-text'>
+                            {% if room.parking > 0 %}
+                            <i class='fa fa-motorcycle' style="color:black;"></i> {{ room.parking}} Bike Parking
+                            {% endif %}
+                            {% if room.c_parking > 0 %}
+                            <i class='fa fa-car' style="color:black;"></i> {{ room.c_parking}} Car Parking
+                            {% endif %}
+                            {% if room.parking == 0 and room.c_parking == 0 %}
+                            None
+                            {% endif %}
+                      </p>
+                      <hr> -->
+                      <div style="float:right;">
+                        <a  class='btn btn-primary mt-2' href="{%if room.pk %}{% url 'roomdetail' room.pk%}{%else%}{% url 'roomdetail'%}{%endif%}" >Detail</a>
+                      </div>
                   </div>
+                </div>
             </div>
             {% endfor %}
         </div>
