@@ -53,19 +53,20 @@ def enquirycreate(request, pk):
             data.save()
             data.room.save()
             data.room.user.save()
-            messages.success(request, "Enquiry was sent !")
+            messages.info(request, "Enquiry sent successfully")
             return redirect('roomdetail', pk)
-        
         return redirect('roomdetail', pk)
 
 
 def roomenqiury(request, pk):
     enquirys = Enquiry.objects.get(id=pk)
+    rooms = Room.objects.get(id = enquirys.room.id)
     
     context = {
-        'enquirys': enquirys
+        'enquirys': enquirys,
+        'rooms':rooms,
     }
-    return render(request, 'user/roomenqiury.html', context)
+    return render(request, 'roomdetail.html', context)
 
 def enqiurydelete(request, pk):
     enquirys = Enquiry.objects.get(id=pk)
